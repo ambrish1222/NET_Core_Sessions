@@ -1,0 +1,20 @@
+# SQL Server 2022 for the TaskMaster course.   Start:  docker compose up -d
+# Stop:  docker compose down        (data is kept)
+# Wipe everything:  docker compose down -v
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: taskmaster-sql
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      # Course-only password. Never reuse it anywhere real. Must be 8+ chars with upper, lower, digit, symbol.
+      MSSQL_SA_PASSWORD: "TaskMaster#2026"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+      - ./scripts:/scripts:ro
+
+volumes:
+  sqlserver-data:
