@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Week 1 - C# Console/">
+    <Project Path="Session01.CSharpFoundations/Session01.CSharpFoundations.csproj" />
+    <Project Path="Session02.ControlFlowMethods/Session02.ControlFlowMethods.csproj" />
+    <Project Path="Session03.ClassesEnumsInterfaces/Session03.ClassesEnumsInterfaces.csproj" />
+    <Project Path="Session04.CollectionsLinqExceptions/Session04.CollectionsLinqExceptions.csproj" />
+  </Folder>
+  <Folder Name="/Week 3 - EF Core/">
+    <Project Path="Session10.EfCoreFundamentals/TaskMaster.Api.EfCore.csproj" />
+  </Folder>
+</Solution>

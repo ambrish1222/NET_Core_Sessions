@@ -1,0 +1,109 @@
+@host = http://localhost:5080
+
+### 0. Can the API reach SQL Server? (Exercise 1)
+GET {{host}}/health/db
+
+### ---------- GET (slide 16) ----------
+
+### 1. Get all tasks (200 OK, rows come from SQL Server; run scripts/sample-data.sql first, or POST some)
+GET {{host}}/api/tasks
+
+### 2. Get one task (200 OK)
+GET {{host}}/api/tasks/1
+
+### 3. Task that does not exist (404 Not Found)
+GET {{host}}/api/tasks/999
+
+### ---------- POST (slides 17-19) ----------
+
+### 4. Create a valid task (201 Created + Location header)
+POST {{host}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "  Finish Session 10 lab  ",
+  "priority": "High",
+  "dueDate": "2030-01-01T00:00:00Z"
+}
+
+### 5. Priority can also be a number: 1=Low, 2=Medium, 3=High (201)
+POST {{host}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Number priority",
+  "priority": 1
+}
+
+### 6. Broken business rule: due date in the past (400 from the SERVICE)
+POST {{host}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Old task",
+  "dueDate": "2020-01-01T00:00:00Z"
+}
+
+### 7. Broken input rules: empty title (400 from MODEL VALIDATION, before the service runs)
+POST {{host}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "",
+  "priority": "High"
+}
+
+### 8. Invalid priority value (400 from MODEL VALIDATION)
+POST {{host}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Bad priority",
+  "priority": 9
+}
+
+### ---------- PUT (slide 20) ----------
+
+### 9. Update task 1 (204 No Content, no body)
+PUT {{host}}/api/tasks/1
+Content-Type: application/json
+
+{
+  "title": "Task 1 updated through EF Core",
+  "priority": "High",
+  "status": "Completed"
+}
+
+### 10. Verify the update (200, status is now Completed)
+GET {{host}}/api/tasks/1
+
+### 11. Rule: a Completed task cannot go back to Pending (400 from the SERVICE)
+PUT {{host}}/api/tasks/1
+Content-Type: application/json
+
+{
+  "title": "Task 1 back to pending",
+  "priority": "High",
+  "status": "Pending"
+}
+
+### 12. Update a task that does not exist (404)
+PUT {{host}}/api/tasks/999
+Content-Type: application/json
+
+{
+  "title": "Ghost",
+  "priority": "Low",
+  "status": "Pending"
+}
+
+### ---------- DELETE (slide 21) ----------
+
+### 13. Delete task 2 (204 No Content)
+DELETE {{host}}/api/tasks/2
+
+### 14. Delete it again (404, it is already gone)
+DELETE {{host}}/api/tasks/2
+
+### 15. Confirm the final list
+GET {{host}}/api/tasks

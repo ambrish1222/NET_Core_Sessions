@@ -1,0 +1,18 @@
+# Optional: SQL Server in Docker if you are not on Windows or have no local SQL Server.
+#   docker compose up -d
+# Then run the API with:   export ConnectionStrings__TaskDb="Server=localhost,1433;Database=TaskDbEf;User Id=sa;Password=TaskMaster#2026;TrustServerCertificate=True;"
+# (course-only password, never reuse it anywhere real)
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: taskmaster-sql-ef
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "TaskMaster#2026"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-ef-data:/var/opt/mssql
+volumes:
+  sqlserver-ef-data:
